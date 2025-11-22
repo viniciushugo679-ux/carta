@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>carta-para-emily</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(to bottom, #ffe4ec, #fae3e6, #e6e6ff);
+      font-family: "Georgia", serif;
+    }
+    .envelope-container { text-align: center; cursor: pointer; animation: fadeIn 1s ease; }
+    .envelope {
+      width: 260px; height: 160px; background: #fff; position: relative;
+      border: 2px solid #f7b6c8; border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    .envelope:before {
+      content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(to bottom right, #ffd6e3, #ffedf2);
+      clip-path: polygon(0 0, 100% 0, 50% 55%);
+    }
+    .open-text { margin-top: 12px; font-size: 14px; color: #555; }
+    .carta {
+      display: none; width: 90%; max-width: 600px; background: white;
+      padding: 30px; border-radius: 18px; box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      animation: fadeIn 1s ease; white-space: pre-wrap;
+      font-size: 18px; line-height: 1.6; color: #444;
+    }
+    .title { font-size: 26px; font-weight: bold; margin-bottom: 20px; color: #d14b6a; text-align: center; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(15px);} to {opacity:1; transform:translateY(0);} }
+    .heart {
+      pointer-events:none; position:absolute; width:22px; height:22px;
+      background:#ff6b88; transform:rotate(45deg);
+      animation: subir 4s infinite ease-in; opacity:0.8;
+    }
+    .heart:before, .heart:after {
+      content:""; position:absolute; width:22px; height:22px; background:#ff6b88; border-radius:50%;
+    }
+    .heart:before { top:-11px; left:0; }
+    .heart:after { left:-11px; top:0; }
+    @keyframes subir { 0%{transform:translateY(0) rotate(45deg); opacity:.9;} 50%{opacity:1;} 100%{transform:translateY(-120px) rotate(45deg); opacity:0;} }
+
+    /* RESPONSIVO */
+    @media (max-width: 480px) {
+      .envelope { width: 200px; height: 130px; }
+      .carta { width: 92%; padding: 22px; font-size: 16px; }
+      .title { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="envelope-container" id="envelopeBox" onclick="abrirCarta()">
+    <div class="envelope"></div>
+    <p class="open-text">Clique para abrir sua carta</p>
+  </div>
+
+  <div class="carta" id="carta">
+    <div class="title">Carta para Emily</div>
+    <div id="textoDigitado"></div>
+  </div>
+
+  <script>
+    const texto = `Emily,
+
+Desde que te conheci, tudo ganhou outra cor. Seu sorriso acende meus dias, sua voz acalma minhas noites.
+
+Não sei o que o futuro reserva, mas sei que quero viver cada capítulo ao seu lado.
+
+Com carinho,
+Vinicius P`;
+
+    let i = 0;
+
+    function abrirCarta() {
+      document.getElementById("envelopeBox").style.display = "none";
+      const carta = document.getElementById("carta");
+      carta.style.display = "block";
+      digitar();
+      gerarCoracoes();
+    }
+
+    function digitar() {
+      if (i < texto.length) {
+        document.getElementById("textoDigitado").textContent += texto.charAt(i);
+        i++;
+        setTimeout(digitar, 25);
+      }
+    }
+
+    function gerarCoracoes() {
+      setInterval(() => {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.style.left = Math.random() * window.innerWidth + "px";
+        heart.style.bottom = "0px";
+        heart.style.animationDuration = (3 + Math.random() * 2) + "s";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 5000);
+      }, 600);
+    }
+  </script>
+
+</body>
+</html>
